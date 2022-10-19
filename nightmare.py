@@ -11,7 +11,7 @@ from sqlalchemy import Table, MetaData, create_engine, Column, String, JSON, Boo
 app = FastAPI()
 
 # Configure Metro Reviews
-brainDamage = metro.Metro(domain="https://metro.select-list.xyz", list_id=os.environ["LIST_ID"], secret_key=os.environ["SECRET_KEY"], app=app)
+MetroReviews = metro.Metro(domain="https://metro.select-list.xyz", list_id=os.environ["LIST_ID"], secret_key=os.environ["SECRET_KEY"], app=app)
 
 # Database
 engine = create_engine(os.environ["DATABASE_URI"])
@@ -38,7 +38,7 @@ bots = Table(
 )
 
 # Claim
-@brainDamage.claim()
+@MetroReviews.claim()
 async def claim(request: Request, bot: metro.Bot):
     data = select([bots]).where(
         (bots.columns.bot_id == bot.bot_id)
@@ -67,7 +67,7 @@ async def claim(request: Request, bot: metro.Bot):
     return ORJSONResponse(content=jsonable_encoder(res))
 
 # Unclaim
-@brainDamage.unclaim()
+@MetroReviews.unclaim()
 async def unclaim(request: Request, bot: metro.Bot):
     data = select([bots]).where(
         (bots.columns.bot_id == bot.bot_id)
@@ -96,7 +96,7 @@ async def unclaim(request: Request, bot: metro.Bot):
     return ORJSONResponse(content=jsonable_encoder(res))
 
 # Approve
-@brainDamage.approve()
+@MetroReviews.approve()
 async def approve(request: Request, bot: metro.Bot):
     data = select([bots]).where(
         (bots.columns.bot_id == bot.bot_id)
@@ -126,7 +126,7 @@ async def approve(request: Request, bot: metro.Bot):
 
 
 # Deny
-@brainDamage.deny()
+@MetroReviews.deny()
 async def deny(request: Request, bot: metro.Bot):
     data = select([bots]).where(
         (bots.columns.bot_id == bot.bot_id)
@@ -157,5 +157,5 @@ async def deny(request: Request, bot: metro.Bot):
 # Startup Event
 @app.on_event("startup")
 async def startup():
-    print("nightmare")
-    await brainDamage.register_api_urls()
+    print("Started!")
+    await MetroReviews.register_api_urls()
