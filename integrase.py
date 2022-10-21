@@ -37,6 +37,7 @@ bots = Table(
     Column("nsfw", Boolean),
     Column("tags", JSON),
     Column("invite", String),
+    Column("audit_logs", JSON)
 )
 
 # Claim
@@ -52,7 +53,15 @@ async def claim(request: Request, bot: metro.Bot):
         botExists = True
 
     if botExists == True:
-        connection.execute(update(bots).where(bots.columns.bot_id == bot.bot_id).values(state="CLAIMED"))
+        logs = row.audit_logs
+        
+        logs.append({
+            "uuid": str(uuid4()),
+            "action": "CLAIMED",
+            "user": "0"
+        })
+
+        connection.execute(update(bots).where(bots.columns.bot_id == bot.bot_id).values(state="CLAIMED", audit_logs=logs))
         res = {
             "content": "Bot Claimed",
             "done": True
@@ -60,7 +69,7 @@ async def claim(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "CLAIMED"
-        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite))
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "CLAIMED", "user": "0"}]))
         res = {
             "content": "Bot Added and Claimed",
             "done": True
@@ -81,7 +90,15 @@ async def unclaim(request: Request, bot: metro.Bot):
         botExists = True
 
     if botExists == True:
-        connection.execute(update(bots).where(bots.columns.bot_id == bot.bot_id).values(state="AWAITING_REVIEW"))
+        logs = row.audit_logs
+        
+        logs.append({
+            "uuid": str(uuid4()),
+            "action": "UNCLAIMED",
+            "user": "0"
+        })
+
+        connection.execute(update(bots).where(bots.columns.bot_id == bot.bot_id).values(state="AWAITING_REVIEW", audit_logs=logs))
         res = {
             "content": "Bot Unclaimed",
             "done": True
@@ -89,7 +106,7 @@ async def unclaim(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "AWAITING_REVIEW"
-        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite))
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "UNCLAIMED", "user": "0"}]))
         res = {
             "content": "Bot Added and Unclaimed",
             "done": True
@@ -110,7 +127,15 @@ async def approve(request: Request, bot: metro.Bot):
         botExists = True
 
     if botExists == True:
-        connection.execute(update(bots).where(bots.columns.bot_id == bot.bot_id).values(state="APPROVED"))
+        logs = row.audit_logs
+        
+        logs.append({
+            "uuid": str(uuid4()),
+            "action": "APPROVED",
+            "user": "0"
+        })
+
+        connection.execute(update(bots).where(bots.columns.bot_id == bot.bot_id).values(state="APPROVED", audit_logs=logs))
         res = {
             "content": "Bot Approved",
             "done": True
@@ -118,7 +143,7 @@ async def approve(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "APPROVED"
-        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite))
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "APPROVED", "user": "0"}]))
         res = {
             "content": "Bot Added and Approved",
             "done": True
@@ -140,7 +165,15 @@ async def deny(request: Request, bot: metro.Bot):
         botExists = True
 
     if botExists == True:
-        connection.execute(update(bots).where(bots.columns.bot_id == bot.bot_id).values(state="DENIED"))
+        logs = row.audit_logs
+        
+        logs.append({
+            "uuid": str(uuid4()),
+            "action": "DENIED",
+            "user": "0"
+        })
+
+        connection.execute(update(bots).where(bots.columns.bot_id == bot.bot_id).values(state="DENIED", audit_logs=logs))
         res = {
             "content": "Bot Denied",
             "done": True
@@ -148,7 +181,7 @@ async def deny(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "DENIED"
-        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite))
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "DENIED", "user": "0"}]))
         res = {
             "content": "Bot Added and Denied",
             "done": True
