@@ -52,7 +52,7 @@ async def claim(request: Request, bot: metro.Bot):
         botExists = True
 
     if botExists == True:
-        connection.execute(update(bots).where(bots.bot_id == bot.bot_id).values(state="CLAIMED"))
+        connection.execute(update(bots).where(bots.columns.bot_id == bot.bot_id).values(state="CLAIMED"))
         res = {
             "content": "Bot Claimed",
             "done": True
@@ -81,7 +81,7 @@ async def unclaim(request: Request, bot: metro.Bot):
         botExists = True
 
     if botExists == True:
-        connection.execute(update(bots).where(bots.bot_id == bot.bot_id).values(state="AWAITING_REVIEW"))
+        connection.execute(update(bots).where(bots.columns.bot_id == bot.bot_id).values(state="AWAITING_REVIEW"))
         res = {
             "content": "Bot Unclaimed",
             "done": True
@@ -110,7 +110,7 @@ async def approve(request: Request, bot: metro.Bot):
         botExists = True
 
     if botExists == True:
-        connection.execute(update(bots).where(bots.bot_id == bot.bot_id).values(state="APPROVED"))
+        connection.execute(update(bots).where(bots.columns.bot_id == bot.bot_id).values(state="APPROVED"))
         res = {
             "content": "Bot Approved",
             "done": True
@@ -140,7 +140,7 @@ async def deny(request: Request, bot: metro.Bot):
         botExists = True
 
     if botExists == True:
-        connection.execute(update(bots).where(bots.bot_id == bot.bot_id).values(state="DENIED"))
+        connection.execute(update(bots).where(bots.columns.bot_id == bot.bot_id).values(state="DENIED"))
         res = {
             "content": "Bot Denied",
             "done": True
