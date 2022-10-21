@@ -13,7 +13,7 @@ load_dotenv()
 app = FastAPI()
 
 # Configure Metro Reviews
-MetroReviews = metro.Metro(domain="https://metro.select-list.xyz", list_id=os.getenv("LIST_ID"), secret_key=os.getenv("SECRET_KEY"), app=app)
+metro_reviews = metro.Metro(domain="https://metro.select-list.xyz", list_id=os.getenv("LIST_ID"), secret_key=os.getenv("SECRET_KEY"), app=app)
 
 # Database
 engine = create_engine(os.getenv("DATABASE_URI"))
@@ -40,7 +40,7 @@ bots = Table(
 )
 
 # Claim
-@MetroReviews.claim()
+@metro_reviews.claim()
 async def claim(request: Request, bot: metro.Bot):
     data = select([bots]).where(
         (bots.columns.bot_id == bot.bot_id)
@@ -69,7 +69,7 @@ async def claim(request: Request, bot: metro.Bot):
     return ORJSONResponse(content=jsonable_encoder(res))
 
 # Unclaim
-@MetroReviews.unclaim()
+@metro_reviews.unclaim()
 async def unclaim(request: Request, bot: metro.Bot):
     data = select([bots]).where(
         (bots.columns.bot_id == bot.bot_id)
@@ -98,7 +98,7 @@ async def unclaim(request: Request, bot: metro.Bot):
     return ORJSONResponse(content=jsonable_encoder(res))
 
 # Approve
-@MetroReviews.approve()
+@metro_reviews.approve()
 async def approve(request: Request, bot: metro.Bot):
     data = select([bots]).where(
         (bots.columns.bot_id == bot.bot_id)
@@ -128,7 +128,7 @@ async def approve(request: Request, bot: metro.Bot):
 
 
 # Deny
-@MetroReviews.deny()
+@metro_reviews.deny()
 async def deny(request: Request, bot: metro.Bot):
     data = select([bots]).where(
         (bots.columns.bot_id == bot.bot_id)
@@ -160,4 +160,4 @@ async def deny(request: Request, bot: metro.Bot):
 @app.on_event("startup")
 async def startup():
     print("Started!")
-    await MetroReviews.register_api_urls()
+    await metro_reviews.register_api_urls()
