@@ -6,15 +6,17 @@ from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import ORJSONResponse
 from sqlalchemy import Table, MetaData, create_engine, Column, String, JSON, Boolean, update, select, insert
+from dotenv import load_dotenv
+load_dotenv()
 
 # Configure Fast API
 app = FastAPI()
 
 # Configure Metro Reviews
-MetroReviews = metro.Metro(domain="https://metro.select-list.xyz", list_id=os.environ["LIST_ID"], secret_key=os.environ["SECRET_KEY"], app=app)
+MetroReviews = metro.Metro(domain="https://metro.select-list.xyz", list_id=os.getenv("LIST_ID"), secret_key=os.getenv("SECRET_KEY"), app=app)
 
 # Database
-engine = create_engine(os.environ["DATABASE_URI"])
+engine = create_engine(os.getenv("DATABASE_URI"))
 metadata = MetaData()
 connection = engine.connect()
 
@@ -50,7 +52,7 @@ async def claim(request: Request, bot: metro.Bot):
         botExists = True
 
     if botExists == True:
-        update(bots).where(bots.bot_id == bot.bot_id).values(state="CLAIMED")
+        connection.execute(update(bots).where(bots.bot_id == bot.bot_id).values(state="CLAIMED"))
         res = {
             "content": "Bot Claimed",
             "done": True
@@ -58,7 +60,7 @@ async def claim(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "CLAIMED"
-        insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite)
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite))
         res = {
             "content": "Bot Added and Claimed",
             "done": True
@@ -79,7 +81,7 @@ async def unclaim(request: Request, bot: metro.Bot):
         botExists = True
 
     if botExists == True:
-        update(bots).where(bots.bot_id == bot.bot_id).values(state="AWAITING_REVIEW")
+        connection.execute(update(bots).where(bots.bot_id == bot.bot_id).values(state="AWAITING_REVIEW"))
         res = {
             "content": "Bot Unclaimed",
             "done": True
@@ -87,7 +89,7 @@ async def unclaim(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "AWAITING_REVIEW"
-        insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite)
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite))
         res = {
             "content": "Bot Added and Unclaimed",
             "done": True
@@ -108,7 +110,7 @@ async def approve(request: Request, bot: metro.Bot):
         botExists = True
 
     if botExists == True:
-        update(bots).where(bots.bot_id == bot.bot_id).values(state="APPROVED")
+        connection.execute(update(bots).where(bots.bot_id == bot.bot_id).values(state="APPROVED"))
         res = {
             "content": "Bot Approved",
             "done": True
@@ -116,7 +118,7 @@ async def approve(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "APPROVED"
-        insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite)
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite))
         res = {
             "content": "Bot Added and Approved",
             "done": True
@@ -138,7 +140,7 @@ async def deny(request: Request, bot: metro.Bot):
         botExists = True
 
     if botExists == True:
-        update(bots).where(bots.bot_id == bot.bot_id).values(state="DENIED")
+        connection.execute(update(bots).where(bots.bot_id == bot.bot_id).values(state="DENIED"))
         res = {
             "content": "Bot Denied",
             "done": True
@@ -146,7 +148,7 @@ async def deny(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "DENIED"
-        insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite)
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite))
         res = {
             "content": "Bot Added and Denied",
             "done": True
