@@ -2,7 +2,7 @@
 import metro_integrase as metro
 import os
 from uuid import uuid4
-from datetime import now
+from datetime import datetime
 from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import ORJSONResponse
@@ -51,7 +51,7 @@ async def claim(request: Request, bot: metro.Bot):
         (bots.columns.bot_id == bot.bot_id)
     )
     
-    date = now()
+    date = datetime.now()
 
     botExists = False
     
@@ -90,7 +90,7 @@ async def unclaim(request: Request, bot: metro.Bot):
         (bots.columns.bot_id == bot.bot_id)
     )
     
-    date = now()
+    date = datetime.now()
 
     botExists = False
     
@@ -129,7 +129,7 @@ async def approve(request: Request, bot: metro.Bot):
         (bots.columns.bot_id == bot.bot_id)
     )
     
-    date = now()
+    date = datetime.now()
 
     botExists = False
     
@@ -169,7 +169,7 @@ async def deny(request: Request, bot: metro.Bot):
         (bots.columns.bot_id == bot.bot_id)
     )
     
-    date = now()
+    date = datetime.now()
 
     botExists = False
     
