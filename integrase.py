@@ -2,10 +2,11 @@
 import metro_integrase as metro
 import os
 from uuid import uuid4
+from datetime import date
 from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import ORJSONResponse
-from sqlalchemy import Table, MetaData, create_engine, Column, String, JSON, Boolean, update, select, insert
+from sqlalchemy import Table, MetaData, create_engine, Column, String, JSON, Boolean, DateTime, update, select, insert
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -25,6 +26,7 @@ bots = Table(
     "bots",
     metadata,
     Column("bot_id", String),
+    Column("avatar", String),
     Column("uuid", String),
     Column("username", String),
     Column("description", String),
@@ -37,7 +39,9 @@ bots = Table(
     Column("nsfw", Boolean),
     Column("tags", JSON),
     Column("invite", String),
-    Column("audit_logs", JSON)
+    Column("audit_logs", JSON),
+    Column("createdAt", DateTime),
+    Column("updatedAt", DateTime)
 )
 
 # Claim
@@ -47,6 +51,8 @@ async def claim(request: Request, bot: metro.Bot):
         (bots.columns.bot_id == bot.bot_id)
     )
     
+    now = datetime.now()
+
     botExists = False
     
     for row in connection.execute(data):
@@ -69,7 +75,7 @@ async def claim(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "CLAIMED"
-        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "CLAIMED", "user": "0"}]))
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, avatar="/defaultavatar.png", uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "CLAIMED", "user": "0"}], createdAt=now, updatedAt=now))
         res = {
             "content": "Bot Added and Claimed",
             "done": True
@@ -84,6 +90,8 @@ async def unclaim(request: Request, bot: metro.Bot):
         (bots.columns.bot_id == bot.bot_id)
     )
     
+    now = datetime.now()
+
     botExists = False
     
     for row in connection.execute(data):
@@ -106,7 +114,7 @@ async def unclaim(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "AWAITING_REVIEW"
-        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "UNCLAIMED", "user": "0"}]))
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, avatar="/defaultavatar.png", uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "UNCLAIMED", "user": "0"}], createdAt=now, updatedAt=now))
         res = {
             "content": "Bot Added and Unclaimed",
             "done": True
@@ -121,6 +129,8 @@ async def approve(request: Request, bot: metro.Bot):
         (bots.columns.bot_id == bot.bot_id)
     )
     
+    now = datetime.now()
+
     botExists = False
     
     for row in connection.execute(data):
@@ -143,7 +153,7 @@ async def approve(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "APPROVED"
-        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "APPROVED", "user": "0"}]))
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, avatar="/defaultavatar.png", uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "APPROVED", "user": "0"}], createdAt=now, updatedAt=now))
         res = {
             "content": "Bot Added and Approved",
             "done": True
@@ -159,6 +169,8 @@ async def deny(request: Request, bot: metro.Bot):
         (bots.columns.bot_id == bot.bot_id)
     )
     
+    now = datetime.now()
+
     botExists = False
     
     for row in connection.execute(data):
@@ -181,7 +193,7 @@ async def deny(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "DENIED"
-        connection.execute(insert(bots).values(bot_id=bot.bot_id, uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "DENIED", "user": "0"}]))
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, avatar="/defaultavatar.png", uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "DENIED", "user": "0"}], createdAt=now, updatedAt=now))
         res = {
             "content": "Bot Added and Denied",
             "done": True
