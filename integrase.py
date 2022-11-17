@@ -2,7 +2,7 @@
 import metro_integrase as metro
 import os
 from uuid import uuid4
-from datetime import date
+import datetime
 from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import ORJSONResponse
