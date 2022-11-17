@@ -2,7 +2,7 @@
 import metro_integrase as metro
 import os
 from uuid import uuid4
-import datetime
+from datetime import now
 from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import ORJSONResponse
@@ -51,7 +51,7 @@ async def claim(request: Request, bot: metro.Bot):
         (bots.columns.bot_id == bot.bot_id)
     )
     
-    now = datetime.now()
+    date = now()
 
     botExists = False
     
@@ -75,7 +75,7 @@ async def claim(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "CLAIMED"
-        connection.execute(insert(bots).values(bot_id=bot.bot_id, avatar="/defaultavatar.png", uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "CLAIMED", "user": "0"}], createdAt=now, updatedAt=now))
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, avatar="/defaultavatar.png", uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "CLAIMED", "user": "0"}], createdAt=date, updatedAt=date))
         res = {
             "content": "Bot Added and Claimed",
             "done": True
@@ -90,7 +90,7 @@ async def unclaim(request: Request, bot: metro.Bot):
         (bots.columns.bot_id == bot.bot_id)
     )
     
-    now = datetime.now()
+    date = now()
 
     botExists = False
     
@@ -114,7 +114,7 @@ async def unclaim(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "AWAITING_REVIEW"
-        connection.execute(insert(bots).values(bot_id=bot.bot_id, avatar="/defaultavatar.png", uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "UNCLAIMED", "user": "0"}], createdAt=now, updatedAt=now))
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, avatar="/defaultavatar.png", uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "UNCLAIMED", "user": "0"}], createdAt=date, updatedAt=date))
         res = {
             "content": "Bot Added and Unclaimed",
             "done": True
@@ -129,7 +129,7 @@ async def approve(request: Request, bot: metro.Bot):
         (bots.columns.bot_id == bot.bot_id)
     )
     
-    now = datetime.now()
+    date = now()
 
     botExists = False
     
@@ -153,7 +153,7 @@ async def approve(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "APPROVED"
-        connection.execute(insert(bots).values(bot_id=bot.bot_id, avatar="/defaultavatar.png", uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "APPROVED", "user": "0"}], createdAt=now, updatedAt=now))
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, avatar="/defaultavatar.png", uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "APPROVED", "user": "0"}], createdAt=date, updatedAt=date))
         res = {
             "content": "Bot Added and Approved",
             "done": True
@@ -169,7 +169,7 @@ async def deny(request: Request, bot: metro.Bot):
         (bots.columns.bot_id == bot.bot_id)
     )
     
-    now = datetime.now()
+    date = now()
 
     botExists = False
     
@@ -193,7 +193,7 @@ async def deny(request: Request, bot: metro.Bot):
     else:
         uuid = uuid4()
         state = "DENIED"
-        connection.execute(insert(bots).values(bot_id=bot.bot_id, avatar="/defaultavatar.png", uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "DENIED", "user": "0"}], createdAt=now, updatedAt=now))
+        connection.execute(insert(bots).values(bot_id=bot.bot_id, avatar="/defaultavatar.png", uuid=uuid, username=bot.username, description=bot.description, long_description=bot.long_description, state=state, flags=["METRO"], owner=bot.owner, extra_owners=bot.extra_owners, library=bot.library, nsfw=bot.nsfw, tags=bot.tags, invite=bot.invite, audit_logs=[{"uuid": str(uuid4()), "action": "DENIED", "user": "0"}], createdAt=date, updatedAt=date))
         res = {
             "content": "Bot Added and Denied",
             "done": True
