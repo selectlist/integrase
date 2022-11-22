@@ -33,7 +33,7 @@ def Claim(botData):
         # "color": "0xff0000",
         "fields": [{
             "name": "Application/Bot",
-            "value": f"{botData['username']} (<@{botData['bot_id']}>)"
+            "value": f"{botData.username} (<@{botData.bot_id}>)"
         }, {
             "name": "Action",
             "value": "Claimed"
@@ -65,7 +65,7 @@ def Unclaim(botData, reason):
         # "color": "0xff0000",
         "fields": [{
             "name": "Application/Bot",
-            "value": f"{botData['username']} (<@{botData['bot_id']}>)"
+            "value": f"{botData.username} (<@{botData.bot_id}>)"
         }, {
             "name": "Action",
             "value": "Unclaimed"
@@ -97,7 +97,7 @@ def Approve(botData, reason):
         # "color": "0xff0000",
         "fields": [{
             "name": "Application/Bot",
-            "value": f"{botData['username']} (<@{botData['bot_id']}>)"
+            "value": f"{botData.username} (<@{botData.bot_id}>)"
         }, {
             "name": "Action",
             "value": "Approved"
@@ -129,7 +129,7 @@ def Deny(botData, reason):
         # "color": "0xff0000",
         "fields": [{
             "name": "Application/Bot",
-            "value": f"{botData['username']} (<@{botData['bot_id']}>)"
+            "value": f"{botData.username} (<@{botData.bot_id}>)"
         }, {
             "name": "Action",
             "value": "Denied"
