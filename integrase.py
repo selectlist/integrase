@@ -1,5 +1,6 @@
 # Packages
 import metro_integrase as metro
+import panel_logs as panel
 import os
 from uuid import uuid4
 from datetime import datetime
@@ -80,6 +81,8 @@ async def claim(request: Request, bot: metro.Bot):
             "content": "Bot Added and Claimed",
             "done": True
         }
+    
+    panel.Claim(bot)
 
     return ORJSONResponse(content=jsonable_encoder(res))
 
@@ -120,6 +123,8 @@ async def unclaim(request: Request, bot: metro.Bot):
             "done": True
         }
 
+    panel.Unclaim(botData=bot, reason="[Error] Reason cannot be supplied by Metro Reviews at this time!")
+
     return ORJSONResponse(content=jsonable_encoder(res))
 
 # Approve
@@ -158,7 +163,9 @@ async def approve(request: Request, bot: metro.Bot):
             "content": "Bot Added and Approved",
             "done": True
         }
-
+    
+    panel.Approve(botData=bot, reason="[Error] Reason cannot be supplied by Metro Reviews at this time!")
+    
     return ORJSONResponse(content=jsonable_encoder(res))
 
 
@@ -199,6 +206,8 @@ async def deny(request: Request, bot: metro.Bot):
             "done": True
         }
 
+    panel.Deny(botData=bot, reason="[Error] Reason cannot be supplied by Metro Reviews at this time!")
+    
     return ORJSONResponse(content=jsonable_encoder(res))
 
 # Startup Event
