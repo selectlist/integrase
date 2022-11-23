@@ -123,7 +123,9 @@ async def unclaim(request: Request, bot: metro.Bot):
             "done": True
         }
 
-    panel.Unclaim(botData=bot, reason="[Error] Reason cannot be supplied by Metro Reviews at this time!")
+    requestData = await request.json()
+
+    panel.Unclaim(botData=bot, reason=requestData.reason)
 
     return ORJSONResponse(content=jsonable_encoder(res))
 
@@ -164,8 +166,11 @@ async def approve(request: Request, bot: metro.Bot):
             "done": True
         }
     
-    panel.Approve(botData=bot, reason="[Error] Reason cannot be supplied by Metro Reviews at this time!")
+    requestData = await request.json()
+
+    panel.Approve(botData=bot, reason=requestData.reason)
     
+    print(bot)
     return ORJSONResponse(content=jsonable_encoder(res))
 
 
@@ -206,7 +211,9 @@ async def deny(request: Request, bot: metro.Bot):
             "done": True
         }
 
-    panel.Deny(botData=bot, reason="[Error] Reason cannot be supplied by Metro Reviews at this time!")
+    requestData = await request.json()
+
+    panel.Deny(botData=bot, reason=requestData.reason)
     
     return ORJSONResponse(content=jsonable_encoder(res))
 
