@@ -42,7 +42,7 @@ def Claim(botData):
             "value": "Reason cannot be supplied, for the Claim action!"
         }, {
             "name": "Moderator",
-            "value": f"Metro Reviews (<@{botData.reviewer}>"
+            "value": f"Metro Reviews (<@{botData.reviewer}>)"
         }]
     }
 
@@ -74,7 +74,7 @@ def Unclaim(botData, reason):
             "value": reason
         }, {
             "name": "Moderator",
-            "value": "Metro Reviews (<@{botData.reviewer}>"
+            "value": f"Metro Reviews (<@{botData.reviewer}>)"
         }]
     }
 
@@ -106,7 +106,7 @@ def Approve(botData, reason):
             "value": reason
         }, {
             "name": "Moderator",
-            "value": "Metro Reviews (<@{botData.reviewer}>"
+            "value": f"Metro Reviews (<@{botData.reviewer}>)"
         }]
     }
 
@@ -138,7 +138,7 @@ def Deny(botData, reason):
             "value": reason
         }, {
             "name": "Moderator",
-            "value": "Metro Reviews (<@{botData.reviewer}>"
+            "value": f"Metro Reviews (<@{botData.reviewer}>)"
         }]
     }
 
