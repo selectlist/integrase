@@ -169,10 +169,8 @@ async def approve(request: Request, bot: metro.Bot):
     requestData = await request.json()
 
     panel.Approve(botData=bot, reason=requestData["reason"])
-    
-    print(bot)
+   
     return ORJSONResponse(content=jsonable_encoder(res))
-
 
 # Deny
 @metro_reviews.deny()
