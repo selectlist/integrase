@@ -1,5 +1,6 @@
 # Packages
 import os
+from urllib.parse import urlparse, parse_qs
 import requests
 import random
 from dotenv import load_dotenv
@@ -115,8 +116,11 @@ def Approve(botData, reason):
     else:
         invite = f"{botData.invite}&guild_id=1001583335191093278"
 
-    print(invite.split("&permissions="))
+    parsedUrl = urlparse(invite)
+    queries = parse_qs(parsedUrl.query)
 
+    print(queries)
+    
     components = {
         "type": 1,
         "components": [{
