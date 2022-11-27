@@ -115,6 +115,8 @@ def Approve(botData, reason):
     else:
         invite = f"{botData.invite}&guild_id=1001583335191093278"
 
+    print(invite.split("&permissions="))
+
     components = {
         "type": 1,
         "components": [{
@@ -125,7 +127,7 @@ def Approve(botData, reason):
         }]
     }
 
-    for channel in logChannels:
+    """ for channel in logChannels:
         requests.post(
             url=f"https://discord.com/api/v9/channels/{channel}/messages", 
             headers={
@@ -136,7 +138,7 @@ def Approve(botData, reason):
                 "embeds": [embed],
                 "components": [components]
             }
-        )
+        ) """
 
 # Deny
 def Deny(botData, reason):
