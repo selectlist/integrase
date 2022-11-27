@@ -119,8 +119,8 @@ def Approve(botData, reason):
     parsedUrl = urlparse(invite)
     queries = parse_qs(parsedUrl.query)
 
-    print(queries)
-    
+    invite = invite.replace(f"&permissions={queries['permissions'][0]}", "&permissions=0")
+
     components = {
         "type": 1,
         "components": [{
@@ -131,7 +131,7 @@ def Approve(botData, reason):
         }]
     }
 
-    """ for channel in logChannels:
+    for channel in logChannels:
         requests.post(
             url=f"https://discord.com/api/v9/channels/{channel}/messages", 
             headers={
@@ -142,7 +142,7 @@ def Approve(botData, reason):
                 "embeds": [embed],
                 "components": [components]
             }
-        ) """
+        )
 
 # Deny
 def Deny(botData, reason):
