@@ -111,9 +111,9 @@ def Approve(botData, reason):
     }
 
     if botData.invite == "" or botData.invite is None:
-        invite = f"https://discord.com/api/oauth2/authorize?client_id={botData.bot_id}&permissions=0&scope=bot%20applications.commands"
+        invite = f"https://discord.com/api/oauth2/authorize?client_id={botData.bot_id}&permissions=0&scope=bot%20applications.commands&guild_id=1001583335191093278"
     else:
-        invite = botData.invite
+        invite = f"{botData.invite}&guild_id=1001583335191093278"
 
     components = {
         "type": 1,
