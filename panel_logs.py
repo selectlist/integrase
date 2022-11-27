@@ -110,6 +110,21 @@ def Approve(botData, reason):
         }]
     }
 
+    if botData.invite == "" or botData.invite is None:
+        invite = f"https://discord.com/api/oauth2/authorize?client_id={botData.bot_id}&permissions=0&scope=bot%20applications.commands"
+    else:
+        invite = botData.invite
+
+    components = {
+        "type": 1,
+        "components": [{
+            "type": 2,
+            "label": "Invite",
+            "style": 5,
+            "url": invite
+        }]
+    }
+
     for channel in logChannels:
         requests.post(
             url=f"https://discord.com/api/v9/channels/{channel}/messages", 
@@ -118,7 +133,8 @@ def Approve(botData, reason):
                 "Content-Type": "application/json"
             },
             json={
-                "embeds": [embed]
+                "embeds": [embed],
+                "components": [components]
             }
         )
 
