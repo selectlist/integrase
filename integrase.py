@@ -16,7 +16,8 @@ app = FastAPI()
 
 # Configure Metro Reviews
 metro_reviews = metro.Metro(
-    domain="https://metro.select-list.xyz", 
+    domain="https://metro.select-list.xyz",
+    website="https://select-list.xyz",
     list_id=os.getenv("LIST_ID"), 
     secret_key=os.getenv("SECRET_KEY"), 
     app=app
@@ -345,4 +346,4 @@ async def deny(request: Request, bot: metro.Bot):
 @app.on_event("startup")
 async def startup():
     print("Started!")
-    await metro_reviews.register_api_urls()
+    # await metro_reviews.register_api_urls()
